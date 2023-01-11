@@ -43,12 +43,10 @@ class LikeRepositoryPostgres extends LikeRepository {
     return result.rowCount;
   }
 
-  async getLikes(payloadLike) {
-    const { threadId, commentId, owner } = payloadLike;
-
+  async getLikes(threadId, commentId) {
     const query = {
-      text: 'SELECT * FROM likes WHERE thread_id = $1 AND comment_id = $2 AND owner = $3',
-      values: [threadId, commentId, owner],
+      text: 'SELECT * FROM likes WHERE thread_id = $1 AND comment_id = $2',
+      values: [threadId, commentId],
     };
 
     const result = await this._pool.query(query);

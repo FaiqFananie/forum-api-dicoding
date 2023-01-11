@@ -6,7 +6,7 @@ const PayloadLike = require('../../../Domains/likes/entities/PayloadLike');
 const pool = require('../../database/postgres/pool');
 const LikeRepositoryPostgres = require('../LikeRepositoryPostgres');
 
-describe('ReplyRepositoryPostgres', () => {
+describe('LikeRepositoryPostgres', () => {
   afterEach(async () => {
     await UsersTableTestHelper.cleanTable();
     await ThreadsTableTestHelper.cleanTable();
@@ -104,6 +104,35 @@ describe('ReplyRepositoryPostgres', () => {
       const like = await likeRepositoryPostgres.getLike(payload);
 
       // Action and Assert
+      expect(like).toStrictEqual(0);
+    });
+  });
+
+  describe('getLike Function', () => {
+    it('should return more than 0 if like comment is found', async () => {
+      // Arrange
+      const userId = await UsersTableTestHelper.addUser({ id: 'user-123' });
+      const threadId = await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: userId });
+      const commentId = await CommentsTableTestHelper.addComment({ id: 'comment-123', threadId });
+      await LikesTableTestHelper.addLike({ id: 'like-123' });
+
+      const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
+
+      // Action
+      const like = await likeRepositoryPostgres.getLikes(threadId, commentId);
+
+      // Assert
+      expect(like).toStrictEqual(1);
+    });
+
+    it('should return 0 if like comment is not found', async () => {
+      // Arrange
+      const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
+
+      // Action
+      const like = await likeRepositoryPostgres.getLikes('thread-123', 'comment-123');
+
+      // Assert
       expect(like).toStrictEqual(0);
     });
   });
