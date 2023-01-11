@@ -13,7 +13,7 @@ class LikeRepositoryPostgres extends LikeRepository {
     const id = `like-${this._idGenerator()}`;
 
     const query = {
-      text: 'INSERT INTO likes VALUES($1, $2, $3, $4',
+      text: 'INSERT INTO likes VALUES($1, $2, $3, $4)',
       values: [id, threadId, commentId, owner],
     };
 
@@ -24,7 +24,7 @@ class LikeRepositoryPostgres extends LikeRepository {
     const { threadId, commentId, owner } = payloadLike;
 
     const query = {
-      text: 'DELETE FROM likes WHERE thread_id = $1, comment_id = $2, owner = $3',
+      text: 'DELETE FROM likes WHERE thread_id = $1 AND comment_id = $2 AND owner = $3',
       values: [threadId, commentId, owner],
     };
 
@@ -32,6 +32,32 @@ class LikeRepositoryPostgres extends LikeRepository {
     if (!result.rowCount) {
       throw new NotFoundError('Like gagal dihapus. Data tidak ditemukan');
     }
+  }
+
+  async getLike(payloadLike) {
+    const { threadId, commentId, owner } = payloadLike;
+
+    const query = {
+      text: 'SELECT * FROM likes WHERE thread_id = $1 AND comment_id = $2 AND owner = $3',
+      values: [threadId, commentId, owner],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rowCount;
+  }
+
+  async getLikes(payloadLike) {
+    const { threadId, commentId, owner } = payloadLike;
+
+    const query = {
+      text: 'SELECT * FROM likes WHERE thread_id = $1 AND comment_id = $2 AND owner = $3',
+      values: [threadId, commentId, owner],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rowCount;
   }
 }
 

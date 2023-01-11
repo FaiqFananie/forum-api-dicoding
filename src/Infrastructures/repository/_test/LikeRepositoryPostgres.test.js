@@ -44,7 +44,7 @@ describe('ReplyRepositoryPostgres', () => {
   });
 
   describe('deleteLike Function', () => {
-    it('should persist comment delete payload correctly', async () => {
+    it('should persist like delete payload correctly', async () => {
       // Arrange
       const userId = await UsersTableTestHelper.addUser({ id: 'user-123' });
       const threadId = await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: userId });
@@ -60,10 +60,10 @@ describe('ReplyRepositoryPostgres', () => {
       const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
 
       // Action
-      await likeRepositoryPostgres.deleteReply(payload);
+      await likeRepositoryPostgres.deleteLike(payload);
 
       // Assert
-      const like = await LikesTableTestHelper.findlikesById(likeId);
+      const like = await LikesTableTestHelper.findLikesById(likeId);
       expect(like).toHaveLength(0);
     });
 
@@ -75,6 +75,47 @@ describe('ReplyRepositoryPostgres', () => {
       return expect(likeRepositoryPostgres.deleteLike('like-123'))
         .rejects
         .toThrowError(NotFoundError);
+    });
+  });
+
+  describe('getLike Function', () => {
+    it('should return 1 if like comment is found', async () => {
+      // Arrange
+      const userId = await UsersTableTestHelper.addUser({ id: 'user-123' });
+      const threadId = await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: userId });
+      const commentId = await CommentsTableTestHelper.addComment({ id: 'comment-123', threadId });
+      await LikesTableTestHelper.addLike({ id: 'like-123' });
+
+      const payload = new PayloadLike({
+        threadId,
+        commentId,
+        owner: userId,
+      });
+
+      const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
+
+      // Action
+      const like = await likeRepositoryPostgres.getLike(payload);
+
+      // Assert
+      expect(like).toStrictEqual(1);
+    });
+
+    it('should return 0 if like comment is not found', async () => {
+      // Arrange
+      const payload = new PayloadLike({
+        threadId: 'thread-123',
+        commentId: 'comment-123',
+        owner: 'user-123',
+      });
+
+      const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
+
+      // Action
+      const like = await likeRepositoryPostgres.getLike(payload);
+
+      // Action and Assert
+      expect(like).toStrictEqual(0);
     });
   });
 });
