@@ -37,7 +37,7 @@ describe('a PayloadLike entities', () => {
 
     // Assert
     expect(threadId).toEqual(payload.threadId);
-    expect(commentId).toEqual(payload.content);
+    expect(commentId).toEqual(payload.commentId);
     expect(owner).toEqual(payload.owner);
   });
 });
