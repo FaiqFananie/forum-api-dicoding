@@ -30,11 +30,11 @@ class ThreadDetail {
     comments.map((v) => {
       if ((typeof v !== 'undefined' && typeof v !== 'object') || Array.isArray(v) === true) throw new Error('THREAD_DETAIL.COMMENTS_NOT_MEET_DATA_TYPE_SPECIFICATION');
 
-      if (!v.id || !v.username || !v.date || !v.content || !v.replies) {
+      if (!v.id || !v.username || !v.date || !v.content || v.likeCount === undefined || !v.replies) {
         throw new Error('THREAD_DETAIL.COMMENTS_ELEMENT_NOT_CONTAIN_NEEDED_PROPERTY');
       }
 
-      if (typeof v.id !== 'string' || typeof v.username !== 'string' || v.date instanceof Date === false || typeof v.content !== 'string' || Array.isArray(v.replies) !== true) {
+      if (typeof v.id !== 'string' || typeof v.username !== 'string' || v.date instanceof Date === false || typeof v.content !== 'string' || typeof v.likeCount !== 'number' || Array.isArray(v.replies) !== true) {
         throw new Error('THREAD_DETAIL.COMMENTS_ELEMENT_NOT_MEET_DATA_TYPE_SPECIFICATION');
       }
 

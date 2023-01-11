@@ -12,6 +12,7 @@ describe('an CommentDetail entities', () => {
       date: new Date(),
       content: 'abc',
       isdelete: 'true',
+      likeCount: '0',
       replies: [],
     })).toThrowError('COMMENT_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
     expect(() => commentDetail._addComment({
@@ -20,6 +21,7 @@ describe('an CommentDetail entities', () => {
       date: new Date(),
       content: 'abc',
       isdelete: true,
+      likeCount: 0,
       replies: 1,
     })).toThrowError('COMMENT_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
     expect(() => commentDetail._addComment({
@@ -28,6 +30,7 @@ describe('an CommentDetail entities', () => {
       date: new Date(),
       content: 'abc',
       isdelete: true,
+      likeCount: 0,
       replies: [1],
     })).toThrowError('COMMENT_DETAIL.REPLIES_NOT_MEET_DATA_TYPE_SPECIFICATION');
     expect(() => commentDetail._addComment({
@@ -36,6 +39,7 @@ describe('an CommentDetail entities', () => {
       date: new Date(),
       content: 'abc',
       isdelete: true,
+      likeCount: 0,
       replies: [{
         id: 123,
         date: new Date(),
@@ -64,6 +68,7 @@ describe('an CommentDetail entities', () => {
       date: new Date(),
       content: 'abc',
       isdelete: true,
+      likeCount: 0,
       replies: [{
         id: '123',
         date: new Date(),
@@ -81,6 +86,7 @@ describe('an CommentDetail entities', () => {
       date: new Date(),
       content: 'abc',
       isdelete: true,
+      likeCount: 0,
       replies: [],
     };
 
@@ -107,6 +113,7 @@ describe('an CommentDetail entities', () => {
       date: new Date(),
       content: 'abc',
       isdelete: false,
+      likeCount: 0,
       replies: [],
     };
 
@@ -133,6 +140,7 @@ describe('an CommentDetail entities', () => {
       date: new Date(),
       content: 'abc',
       isdelete: false,
+      likeCount: 0,
       replies: [{
         id: '123',
         date: new Date(),
@@ -170,6 +178,7 @@ describe('an CommentDetail entities', () => {
       date: new Date(),
       content: 'abc',
       isdelete: false,
+      likeCount: 0,
       replies: [{
         id: '123',
         date: new Date(),
@@ -207,6 +216,7 @@ describe('an CommentDetail entities', () => {
       date: new Date(),
       content: 'abc',
       isdelete: false,
+      likeCount: 0,
       replies: [{
         id: '123',
         date: new Date(),
