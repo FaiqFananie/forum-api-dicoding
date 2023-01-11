@@ -4,13 +4,13 @@ class CommentDetail {
   }
 
   _verifyPayload({
-    id, username, date, content, isdelete, replies,
+    id, username, date, content, isdelete, likeCount, replies,
   }) {
-    if (!id || !username || !date || !content || isdelete === undefined || !replies) {
+    if (!id || !username || !date || !content || isdelete === undefined || likeCount === undefined || !replies) {
       throw new Error('COMMENT_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (typeof id !== 'string' || typeof username !== 'string' || date instanceof Date === false || typeof content !== 'string' || typeof isdelete !== 'boolean') {
+    if (typeof id !== 'string' || typeof username !== 'string' || date instanceof Date === false || typeof content !== 'string' || typeof isdelete !== 'boolean' || typeof likeCount !== 'number') {
       throw new Error('COMMENT_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
 
@@ -31,7 +31,7 @@ class CommentDetail {
   _addComment(payload) {
     this._verifyPayload(payload);
     const {
-      id, username, date, content, isdelete, replies,
+      id, username, date, content, isdelete, likeCount, replies,
     } = payload;
 
     this.comments.push({
@@ -45,6 +45,7 @@ class CommentDetail {
         username: v.username,
       })),
       content: (isdelete) ? '**komentar telah dihapus**' : content,
+      likeCount,
     });
   }
 

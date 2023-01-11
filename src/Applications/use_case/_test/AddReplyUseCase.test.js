@@ -5,7 +5,7 @@ const AddedReply = require('../../../Domains/replies/entities/AddedReply');
 const AddReplyUseCase = require('../AddReplyUseCase');
 const PayloadReply = require('../../../Domains/replies/entities/PayloadReply');
 
-describe('AddCommentUseCase', () => {
+describe('AddReplyUseCase', () => {
   it('should orchestrating the add comment action correctly', async () => {
     // Arrange
     const useCasePayload = {

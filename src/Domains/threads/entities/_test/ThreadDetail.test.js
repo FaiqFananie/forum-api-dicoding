@@ -71,6 +71,7 @@ describe('an ThreadDetail entities', () => {
       username: 'admin',
       date: new Date(),
       content: 'new comment',
+      likeCount: 0,
       replies: {},
     }])).toThrowError('THREAD_DETAIL.COMMENTS_ELEMENT_NOT_MEET_DATA_TYPE_SPECIFICATION');
     expect(() => threadDetail._addComments([{
@@ -78,6 +79,7 @@ describe('an ThreadDetail entities', () => {
       username: 'admin',
       date: new Date(),
       content: 'new comment',
+      likeCount: 0,
       replies: [1],
     }])).toThrowError('THREAD_DETAIL.COMMENTS_REPLIES_NOT_MEET_DATA_TYPE_SPECIFICATION');
     expect(() => threadDetail._addComments([{
@@ -85,6 +87,7 @@ describe('an ThreadDetail entities', () => {
       username: 'admin',
       date: new Date(),
       content: 'new comment',
+      likeCount: 0,
       replies: [{
         id: true,
         content: 'new reply',
@@ -112,12 +115,14 @@ describe('an ThreadDetail entities', () => {
       username: 'admin',
       date: new Date(),
       content: 'new comment',
+      likeCount: 0,
     }])).toThrowError('THREAD_DETAIL.COMMENTS_ELEMENT_NOT_CONTAIN_NEEDED_PROPERTY');
     expect(() => threadDetail._addComments([{
       id: '123',
       username: 'admin',
       date: new Date(),
       content: 'new comment',
+      likeCount: 0,
       replies: [{
         id: '123',
         content: 'new reply',
@@ -141,6 +146,7 @@ describe('an ThreadDetail entities', () => {
       username: 'admin',
       date: new Date(),
       content: 'new comment',
+      likeCount: 0,
       replies: [{
         id: '123',
         content: 'new reply',
@@ -185,6 +191,7 @@ describe('an ThreadDetail entities', () => {
       username: 'admin',
       date: new Date(),
       content: 'new comment',
+      likeCount: 0,
       replies: [],
     }];
 

@@ -155,4 +155,63 @@ describe('comments endpoint', () => {
       expect(responseJson.message).toEqual('Anda tidak berhak mengakses resource ini');
     });
   });
+
+  describe('when PUT /threads/{threadId}/comments/{commentId}/likes', () => {
+    it('should response 200 and persisted user', async () => {
+      // Arrange
+      const threadId = await ThreadsTableTestHelper.addThread({ id: 'thread-12345678' });
+      const commentId = await CommentsTableTestHelper.addComment({ id: 'comment-12345678' });
+
+      // Action
+      const response = await server.inject({
+        method: 'PUT',
+        url: `/threads/${threadId}/comments/${commentId}/likes`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+    });
+
+    it('should response 404 when thread is not found', async () => {
+      // Arrange and Action
+      const response = await server.inject({
+        method: 'PUT',
+        url: '/threads/thread-123456789/comments/comment-123456789/likes',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('ID tidak ditemukan');
+    });
+
+    it('should response 404 when comment is not found', async () => {
+      // Arrange
+      const threadId = await ThreadsTableTestHelper.addThread({ id: 'thread-123456789' });
+
+      // Arrange and Action
+      const response = await server.inject({
+        method: 'PUT',
+        url: `/threads/${threadId}/comments/comment-123456789/likes`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('Komentar tidak ditemukan');
+    });
+  });
 });
