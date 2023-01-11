@@ -81,13 +81,13 @@ describe('ReplyRepositoryPostgres', () => {
     });
   });
 
-  describe('getRepliesByComment', () => {
+  describe('getRepliesByThread', () => {
     it('should throw NotFoundError when reply not found', async () => {
       // Arrange
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
       // Action
-      const replies = await replyRepositoryPostgres.getRepliesByComment('comment-123');
+      const replies = await replyRepositoryPostgres.getRepliesByThread('thread-123');
 
       // Assert
       expect(Array.isArray(replies)).toEqual(true);
@@ -112,12 +112,13 @@ describe('ReplyRepositoryPostgres', () => {
       await RepliesTableTestHelper.addReply(payload);
 
       // Action
-      const replies = await replyRepositoryPostgres.getRepliesByComment('comment-123');
+      const replies = await replyRepositoryPostgres.getRepliesByThread('thread-123');
 
       // Assert
       expect(Array.isArray(replies)).toEqual(true);
       expect(replies.length).toEqual(1);
       expect(replies[0].id).toEqual(payload.id);
+      expect(replies[0].comment_id).toEqual(payload.commentId);
       expect(replies[0].content).toEqual(payload.content);
       expect(replies[0].date).toEqual(payload.createdAt);
       expect(replies[0].username).toEqual('admin');

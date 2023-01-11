@@ -113,16 +113,16 @@ describe('LikeRepositoryPostgres', () => {
       // Arrange
       const userId = await UsersTableTestHelper.addUser({ id: 'user-123' });
       const threadId = await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: userId });
-      const commentId = await CommentsTableTestHelper.addComment({ id: 'comment-123', threadId });
+      await CommentsTableTestHelper.addComment({ id: 'comment-123', threadId });
       await LikesTableTestHelper.addLike({ id: 'like-123' });
 
       const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
 
       // Action
-      const like = await likeRepositoryPostgres.getLikes(threadId, commentId);
+      const like = await likeRepositoryPostgres.getLikesByThread(threadId);
 
       // Assert
-      expect(like).toStrictEqual(1);
+      expect(like).toHaveLength(1);
     });
 
     it('should return 0 if like comment is not found', async () => {
@@ -130,10 +130,10 @@ describe('LikeRepositoryPostgres', () => {
       const likeRepositoryPostgres = new LikeRepositoryPostgres(pool, {});
 
       // Action
-      const like = await likeRepositoryPostgres.getLikes('thread-123', 'comment-123');
+      const like = await likeRepositoryPostgres.getLikesByThread('thread-123');
 
       // Assert
-      expect(like).toStrictEqual(0);
+      expect(like).toHaveLength(0);
     });
   });
 });
